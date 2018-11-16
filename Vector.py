@@ -6,8 +6,14 @@ import math
 
 class Vector:
 
-    def __init__(self, f_vect, n_docs, df_vect):
-        """ Creates a sparse vector that is normalized with tfidf """
+    def __init__(self, f_vect, d_len, n_docs, df_vect):
+        """ Creates a sparse vector that is normalized with tfidf
+              
+              f_vect  -- Frequency vector in non-sparse format
+              d_len   -- Length of the document in number of characters
+              n_docs  -- Number of documents in corpus
+              df_vect -- Number of documents each word appears in
+        """
 
         self.s_vect = []
         self.d_len = d_len
