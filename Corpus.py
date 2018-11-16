@@ -23,9 +23,6 @@ class Corpus:
         self.documents = []
         self.init_docs(docs_path)
 
-        # Create the vector schema
-        self.vect_schema = []
-
     def init_stop_words(self, stop_word_path):
         """ initializes stop words """
         if not stop_word_path:

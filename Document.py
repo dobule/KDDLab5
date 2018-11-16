@@ -3,6 +3,7 @@
 # Description: Stores all of the information pertaining to a document
 import string
 from porter import PorterStemmer
+from Vector import *
 
 
 class Document:
@@ -31,7 +32,19 @@ class Document:
         self.words = []
         self.init_words()
 
-        self.vector = None
+        self.vector = Vector.from_document(self)
+
+    def init_freq_vector(self):
+        """ initializes the frequency vector.
+            format: v = [ (word, count), (word2, count2) .... ]
+        """
+        count = {}
+        for word in self.words:
+            if word in list(count.keys()):
+                count[word] += 1
+            else:
+                count[word] = 0
+        self.freq_vector = [(k, v) for k, v in count.items()]
 
     def init_words(self):
         """ Splits text into word tokens, removes stop words and stubs
