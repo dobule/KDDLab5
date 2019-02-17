@@ -1,10 +1,13 @@
 # Name: Ryan Gelston and John Torres 
 # Class: CSC 466-01 (Fall 2018)
 # Description: Stores all of the information pertaining to a document
+import string
+from porter import PorterStemmer
+from Vector import *
+
 
 class Document:
-
-    def __init__(self, text, author, title, stop_words=None, stem_f=None):
+    def __init__(self, text, author, title, stop_words=None, should_stem=False):
         """ Creates a document object.
 
               text        -- The text of the document as one string
@@ -16,30 +19,56 @@ class Document:
               n_docs      -- Number of documents in the corpus
               df_vect     -- Frequency
         """
+        self.stop_words = stop_words
+        self.should_stem = should_stem
+        self.porter = PorterStemmer()
 
+        self.orig_text = text
         self.length = len(text)
+
         self.author = author
         self.title = title
-        self.text = cleanText(text, stop_words)
-        self.vector = None
 
+        self.words = []
+        self.init_words()
 
-    @static
-    def cleanText(text, stop_words, stem_f):
+        self.vector = Vector.from_document(self)
+
+    def init_freq_vector(self):
+        """ initializes the frequency vector.
+            format: v = [ (word, count), (word2, count2) .... ]
+        """
+        count = {}
+        for word in self.words:
+            if word in list(count.keys()):
+                count[word] += 1
+            else:
+                count[word] = 0
+        self.freq_vector = [(k, v) for k, v in count.items()]
+
+    def init_words(self):
         """ Splits text into word tokens, removes stop words and stubs
               the remaining words.
-
-              text -- The text of the document as one string
-              stop_words -- List of stop words
         """
-
-        # Split words
-
-        if stop_words != None:
-            # Remove stopwords
-
-        if stem_f != None:
-            # Stem remaining words
+        words = []
+        document = self.orig_text
+        for c in string.punctuation:
+            document = document.replace(c, ' ')
+        for word in document.split():
+            word = word.strip().lower()
+            should_add = True
+            for c in word:
+                if c not in string.ascii_letters:
+                    should_add = False
+            if word == '':
+                should_add = False
+            if not self.stop_words:
+                if word in self.stop_words:
+                    should_add = False
+            if self.should_stem and should_add:
+                word = self.porter.stem(word, 0, len(word) - 1)
+            if should_add:
+                words.append(word)
 
     def createFreqVect(self, vect_schema):
         """ Creates a frequency vector using the format in vect_schema

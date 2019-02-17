@@ -30,6 +30,10 @@ class Vector:
 
         self.w_vect = [(i, tf_f * idf_f(df_vect[i])) for i, t in self.s_vect]
 
+    @staticmethod
+    def from_document(doc):
+
+        return Vector(doc.freq_vector)
 
     def cosine(self, oth_vect):
         """ Computes cosine similarity between self and oth_vect """
