@@ -25,6 +25,7 @@ class Document:
 
         self.orig_text = text
         self.length = len(text)
+        self.n_docs = n_docs
 
         self.author = author
         self.title = title
@@ -32,7 +33,13 @@ class Document:
         self.words = []
         self.init_words()
 
+        self.df_vect = []
+        self.init
+
+
+
         self.vector = Vector.from_document(self)
+
 
     def init_freq_vector(self):
         """ initializes the frequency vector.
@@ -46,11 +53,11 @@ class Document:
                 count[word] = 0
         self.freq_vector = [(k, v) for k, v in count.items()]
 
+
     def init_words(self):
         """ Splits text into word tokens, removes stop words and stubs
               the remaining words.
         """
-        words = []
         document = self.orig_text
         for c in string.punctuation:
             document = document.replace(c, ' ')
@@ -68,16 +75,24 @@ class Document:
             if self.should_stem and should_add:
                 word = self.porter.stem(word, 0, len(word) - 1)
             if should_add:
-                words.append(word)
+                self.words.append(word)
 
     def createFreqVect(self, vect_schema):
         """ Creates a frequency vector using the format in vect_schema
             
-              text        -- List of stubbed words with stop words removed
+              word_list   -- List of stubbed words with stop words removed
               vect_schema -- List of words that represent the format of the 
                 long-form word vector
         """
-  
+
+        freq_vect = [0] * len(vect_schema)
+
+        for word, freq in self.df_freq:
+            freq_vect[vect_schema.index(word)] = freq 
+
+        return frew_vect
+              
+
     def createSparseVector(self, vect_schema, n_docs, df_vect):
         """ Initializes a Vector obect in self.vector 
               

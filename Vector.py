@@ -32,7 +32,7 @@ class Vector:
 
     @staticmethod
     def from_document(doc):
-
+         # TODO: constructor doesn't have enough parameters
         return Vector(doc.freq_vector)
 
     def cosine(self, oth_vect):
