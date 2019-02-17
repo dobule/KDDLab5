@@ -33,7 +33,7 @@ class Vector:
     @staticmethod
     def from_document(doc):
          # TODO: constructor doesn't have enough parameters
-        return Vector(doc.freq_vector)
+        return Vector(doc.freq_vector, doc.length, doc.n)
 
     def cosine(self, oth_vect):
         """ Computes cosine similarity between self and oth_vect """
