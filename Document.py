@@ -17,7 +17,7 @@ class Document:
                 long-form word vector
               stop_words  -- List of stop words
               n_docs      -- Number of documents in the corpus
-              df_vect     -- Frequency
+              freq_vector -- Word frequency vector for
         """
         self.stop_words = stop_words
         self.should_stem = should_stem
@@ -33,17 +33,20 @@ class Document:
         self.words = []
         self.init_words()
 
-        self.df_vect = []
-        self.init
+        self.freq_vector = []
+        self.init_freq_vector()
+
+    
+    def createVector(self, vect_schema, df_vect):
+        
 
 
 
-        self.vector = Vector.from_document(self)
 
 
     def init_freq_vector(self):
         """ initializes the frequency vector.
-            format: v = [ (word, count), (word2, count2) .... ]
+            format: v = [ (word0, count0), (word1, count1), ... ]
         """
         count = {}
         for word in self.words:
@@ -51,6 +54,7 @@ class Document:
                 count[word] += 1
             else:
                 count[word] = 0
+
         self.freq_vector = [(k, v) for k, v in count.items()]
 
 
@@ -102,6 +106,8 @@ class Document:
               df_vect     -- Number of documents each word in vect_schema
                               appears in
         """
+
+        
 
     def cosine(self, oth_doc):
         """ Finds the cosine similarity between two documents """

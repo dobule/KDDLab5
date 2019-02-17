@@ -6,6 +6,7 @@ from Document import *
 
 
 class Corpus:
+
     def __init__(self, docs_path, stop_word_path=None, should_stem=False):
         """ Creates an instance of a corpus
 
@@ -23,16 +24,30 @@ class Corpus:
         self.documents = []
         self.init_docs(docs_path)
 
+        self.all_words_schema = self.all_words()
+
+
+    def listOfVectors(self, vect_schema):
+        """ Returns a list of Vector objects where each Vector represents a
+            particular document.
+        """
+
+        return [doc.toVector(vect_schema, self.df_vect(vect_schema)) 
+                for doc in self.documents] 
+
+
     def init_stop_words(self, stop_word_path):
         """ initializes stop words """
         if not stop_word_path:
             return
 
         for docname in os.listdir(os.path.abspath(stop_word_path)):
-            with open(os.path.join(os.path.abspath(stop_word_path), docname),
-                      'r') as f:
+            with open(os.path.join(
+                        os.path.abspath(stop_word_path), docname),
+                        'r') as f:
                 self.stop_words.extend(
                     [word.strip() for word in f.readlines() if word != '\n'])
+
 
     def init_docs(self, rootdir):
         """ initializes the documents in the corpus """
@@ -48,6 +63,33 @@ class Corpus:
                         Document(text, author_dir, docname, self.stop_words,
                                  self.should_stem))
 
+    def df_vect(self, vector_schema):
+        """ Creates a document frequency vector for the passed vector schema
+        """
+        
+        count_vect = [0] * len(vector_schema)
+
+        for idx, word in enumerate(vector_schema):
+            for doc in self.documents:
+                if word in doc.words:
+                    count_vect[idx] = count_vect[idx] + 1
+
+        return [count / self.num_docs for count in count_vect]
+                    
+                    
+
+    def all_words(self):
+        """ Returns a list of all words in the corpus """
+        
+        all_words = set()
+
+        for doc in self.documents:
+            for word in doc.words:
+                all_words.add(word)
+
+        return list(all_words)
+
+
     def n_docs(self):
         """ returns the number of documents """
         return len(self.documents)
@@ -59,4 +101,7 @@ class Corpus:
 
     def ground_truth(self):
         """ list of (title, author) tuples for all documents """
+        # TODO: Why is this called ground truth?
         return [(doc.title, doc.author) for doc in self.documents]
+
+
