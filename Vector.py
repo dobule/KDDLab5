@@ -70,6 +70,9 @@ class Vector:
               n_docs   -- Number of documents in corpus
               df_vect  -- The number of docs each word shows up in
               avdl     -- Average length (in num char) for a document
+              k_1      -- Normalization parameter for self
+              b        -- Normalization parameter for document length
+              k_2      -- Normalization parameter for oth_vect
         """
 
         i = 0
