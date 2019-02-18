@@ -30,7 +30,7 @@ class Vector:
                 self.s_vect.append((idx, val))
 
 
-        self.w_vect = [(i, tf_f * idf_f(df_vect[i])) for i, t in self.s_vect]
+        self.w_vect = [(i, tf_f(t) * idf_f(df_vect[i])) for i, t in self.s_vect]
 
     def groud_truth(self):
         return (self.author, self.title)
