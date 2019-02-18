@@ -43,7 +43,6 @@ class Vector:
 
         return dot / magProd
 
-
     def dotProd(self, oth_vect):
         """ Computes dot product between this vector and another vector """
 
@@ -66,7 +65,7 @@ class Vector:
         """ Computes the magnitude of the vector """
         return math.sqrt(sum([val**2 for idx,val in self.s_vect]))
 
-
+    # TODO correct the okapi method
     def okapi(self, oth_vect, n_docs, df_vect, avdl, k_1, b, k_2):
         """ Computes okapi distancce of two sparse vectors
               
@@ -78,7 +77,6 @@ class Vector:
               b        -- Normalization parameter for document length
               k_2      -- Normalization parameter for oth_vect
         """
-
         i = 0
         j = 0
         result = 0
