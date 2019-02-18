@@ -6,7 +6,7 @@ import math
 
 class Vector:
 
-    def __init__(self, author, title, f_vect, d_len, n_docs, df_vect):
+    def __init__(self, author, title, f_vect, d_len, n_docs=None, df_vect=None):
         """ Creates a sparse vector that is normalized with tfidf
               
               author  -- Author of the document the vector represents
@@ -18,19 +18,25 @@ class Vector:
         """
         self.author = author
         self.title = title
-        self.s_vect = []
         self.d_len = d_len
 
+        # If n_docs or df_vect is None, set the w_vect to f_vect
+        if n_docs is None or df_vect is None:
+            self.w_vect = f_vect
+            return
+
+
         max_val = max(f_vect)
+        s_vect = []
 
         tf_f = lambda t: float(t) / max_val
         idf_f = lambda df: math.log(float(n_docs) / df, 2)
 
         for idx, val in enumerate(f_vect):
             if val > 0:
-                self.s_vect.append((idx, val))
+                s_vect.append((idx, val))
 
-        self.w_vect = [(i, tf_f(t) * idf_f(df_vect[i])) for (i, t) in self.s_vect]
+        self.w_vect = [(i, tf_f(t) * idf_f(df_vect[i])) for (i, t) in s_vect]
 
 
     def ground_truth(self):
