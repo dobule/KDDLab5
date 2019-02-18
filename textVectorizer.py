@@ -24,7 +24,6 @@ corpus = Corpus(ROOT_DIR, STOP_WORDS, STEMMING)
 all_words = corpus.all_words()
 doc_vectors = corpus.listOfVectors(all_words)
 
-"""
 # write ground truth to file
 if GT_OUTFILE:
     with open(GT_OUTFILE, 'w') as f:
@@ -38,4 +37,3 @@ if OUTPUT:
         f.write(out_string)
 else:
     print(out_string)
-"""
