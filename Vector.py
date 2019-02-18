@@ -6,7 +6,7 @@ import math
 
 class Vector:
 
-    def __init__(self, f_vect, d_len, n_docs, df_vect):
+    def __init__(self, author, title, f_vect, d_len, n_docs, df_vect):
         """ Creates a sparse vector that is normalized with tfidf
               
               author  -- Author of the document the vector represents
@@ -17,6 +17,8 @@ class Vector:
               df_vect -- Number of documents each word appears in
         """
 
+        self.author = author
+        self.title = title
         self.s_vect = []
         self.d_len = d_len
 
@@ -29,7 +31,7 @@ class Vector:
             if not(val is 0):
                 self.s_vect.append((idx, val))
 
-        self.w_vect = [(i, tf_f(t) * idf_f(df_vect[i])) for i, t in self.s_vect]
+        self.w_vect = [(i, t) for (i, t) in self.s_vect]
 
     def ground_truth(self):
         return (self.author, self.title)

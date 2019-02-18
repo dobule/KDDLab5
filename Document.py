@@ -7,18 +7,13 @@ from Vector import *
 
 
 class Document:
-    def __init__(self, text, author, title, n_docs, stop_words=None, should_stem=False):
+    def __init__(self, text, author, title, stop_words=None, should_stem=False):
         """ Creates a document object.
 
               text        -- The text of the document as one string
               author      -- The author of the document
               title       -- The title of the document
-              stop_words  -- List of stop words
-              n_docs      -- corpus n
         """
-        self.orig_text = text
-        self.stop_words = stop_words
-        self.should_stem = should_stem
         self.porter = PorterStemmer()
 
         self.length = len(text)
@@ -26,13 +21,17 @@ class Document:
         self.author = author
         self.title = title
 
-        self.words = self.init_words(orig_text)
-        self.freq_vector = self.init_freq_vector()
-        self.vector_schema = [item for idx, item in self.freq_vector]
+        self.words = self.init_words(text, stop_words, should_stem)
+        self.freq_vect = self.init_freq_vector()
 
-    def toVector(self):
+
+    def toVector(self, vect_schema, num_docs, df_vect):
         """ Creates a Vector object from the document """        
-        return Vector(self.freq_vector, self.length, n_docs, df_vect)
+        return Vector(self.createFreqVect(vect_schema), 
+                      self.length, 
+                      num_docs, 
+                      df_vect)
+
 
     def init_freq_vector(self):
         """ initializes the frequency vector.
@@ -47,7 +46,7 @@ class Document:
 
         return [(k, v) for k, v in count.items()]
 
-    def init_words(self, orig_text):
+    def init_words(self, orig_text, stop_words, should_stem):
         """ Splits text into word tokens, removes stop words and stubs
               the remaining words.
         """
@@ -63,10 +62,10 @@ class Document:
 
             if word == '':
                 should_add = False
-            if word in self.stop_words:
+            if stop_words is not None and word in stop_words:
                 should_add = False
 
-            if self.should_stem and should_add:
+            if should_stem and should_add:
                 word = self.porter.stem(word, 0, len(word) - 1)
             
             if should_add:
@@ -80,10 +79,10 @@ class Document:
               vect_schema -- List of words that represent the format of the 
                 long-form word vector
         """
-        freq_vect = [0] * len(vect_schema)
+        count_vect = [0] * len(vect_schema)
 
-        for word, freq in self.df_freq:
-            freq_vect[vect_schema.index(word)] = freq 
+        for word, freq in self.freq_vect:
+            count_vect[vect_schema.index(word)] = freq 
 
-        return freq_vect
+        return [count / self.length for count in count_vect]
 

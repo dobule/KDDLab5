@@ -20,10 +20,11 @@ class Corpus:
         self.stop_words = []
         self.init_stop_words(stop_word_path)
 
-
         # init documents
         self.documents = []
         self.init_docs(docs_path)
+
+        self.num_docs = len(self.documents)
 
         self.all_words_schema = self.all_words()
 
@@ -33,14 +34,17 @@ class Corpus:
             particular document.
         """
 
-        return [doc.toVector(vect_schema, self.df_vect(vect_schema)) 
+        return [doc.toVector(
+                  vect_schema, 
+                  self.df_vect(vect_schema),
+                  self.num_docs) 
                 for doc in self.documents] 
 
 
     def init_stop_words(self, stop_word_path):
         """ initializes stop words """
-        if not stop_word_path:
-            return
+        if stop_word_path is None:
+            return None
 
         with open(stop_word_path, 'r') as f:
             self.stop_words.extend(
