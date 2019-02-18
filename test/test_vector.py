@@ -36,7 +36,7 @@ class VectorTest(unittest.TestCase):
     def test_cosine(self):
         v = create_vector()
         v_two = create_vector_two()
-        result = v.cosin(v_two)
+        result = v.cosine(v_two)
         expected = (2 + 2 + 4 + 16) / (v.magnitude() * v_two.magnitude())
         self.assertEqual(result, expected, msg="cosine")
 

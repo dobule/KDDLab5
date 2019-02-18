@@ -44,20 +44,10 @@ class Vector:
 
     def dotProd(self, oth_vect):
         """ Computes dot product between this vector and another vector """
+        if not len(self.s_vect) == len(oth_vect.s_vect):
+            raise Exception
 
-        i = 0
-        j = 0
-        result = 0
-
-        while i < len(self.s_vect) and j < len(oth_vect):
-            if self.s_vect[i][0] < oth_vect.s_vect[j][0]:
-                i = i + 1
-            elif self.s_vect[i][0] > oth_vect.s_vect[j][0]:
-                j = j + 1
-            else:
-                result = result + self.s_vect[i][1] * oth_vect.s_vect[j][1]
-
-        return result
+        return sum(i[1] * j[1] for i, j in zip(self.s_vect, oth_vect.s_vect))
 
     def magnitude(self):
         """ Computes the magnitude of the vector """
