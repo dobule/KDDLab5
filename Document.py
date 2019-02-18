@@ -13,35 +13,32 @@ class Document:
               text        -- The text of the document as one string
               author      -- The author of the document
               title       -- The title of the document
-              vect_schema -- List of words that represent the format of the 
-                long-form word vector
               stop_words  -- List of stop words
-              n_docs      -- Number of documents in the corpus
               freq_vector -- Word frequency vector for
         """
+
         self.stop_words = stop_words
         self.should_stem = should_stem
         self.porter = PorterStemmer()
 
-        self.orig_text = text
         self.length = len(text)
-        self.n_docs = n_docs
 
         self.author = author
         self.title = title
 
         self.words = []
-        self.init_words()
+        self.init_words(text)
+   
 
-        self.freq_vector = []
-        self.init_freq_vector()
-
-    
-    def createVector(self, vect_schema, df_vect):
-        
-
-
-
+    def toVector(self, vect_schema, num_docs, df_vect):
+        """ Creates a Vector object from the document """        
+        return Vector(
+                self.author,
+                self.title,
+                self.createFreqVect(vect_schema), 
+                self.length,
+                num_docs,
+                df_vect)
 
 
     def init_freq_vector(self):

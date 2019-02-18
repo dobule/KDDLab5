@@ -9,6 +9,8 @@ class Vector:
     def __init__(self, f_vect, d_len, n_docs, df_vect):
         """ Creates a sparse vector that is normalized with tfidf
               
+              author  -- Author of the document the vector represents
+              title   -- Title of the document the vector represents
               f_vect  -- Frequency vector in non-sparse format
               d_len   -- Length of the document in number of characters
               n_docs  -- Number of documents in corpus
@@ -30,10 +32,8 @@ class Vector:
 
         self.w_vect = [(i, tf_f * idf_f(df_vect[i])) for i, t in self.s_vect]
 
-    @staticmethod
-    def from_document(doc):
-         # TODO: constructor doesn't have enough parameters
-        return Vector(doc.freq_vector, doc.length, doc.n)
+    def groud_truth(self):
+        return (self.author, self.title)
 
     def cosine(self, oth_vect):
         """ Computes cosine similarity between self and oth_vect """

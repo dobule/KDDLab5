@@ -20,6 +20,7 @@ class Corpus:
         self.stop_words = []
         self.init_stop_words(stop_word_path)
 
+
         # init documents
         self.documents = []
         self.init_docs(docs_path)
@@ -41,12 +42,11 @@ class Corpus:
         if not stop_word_path:
             return
 
-        for docname in os.listdir(os.path.abspath(stop_word_path)):
-            with open(os.path.join(
-                        os.path.abspath(stop_word_path), docname),
-                        'r') as f:
-                self.stop_words.extend(
-                    [word.strip() for word in f.readlines() if word != '\n'])
+        with open(stop_word_path, 'r') as f:
+            self.stop_words.extend(
+              [word.lstrip().rstrip() 
+                for word in f.readlines() 
+                if not word.isspace()])
 
 
     def init_docs(self, rootdir):
@@ -101,7 +101,6 @@ class Corpus:
 
     def ground_truth(self):
         """ list of (title, author) tuples for all documents """
-        # TODO: Why is this called ground truth?
         return [(doc.title, doc.author) for doc in self.documents]
 
 
