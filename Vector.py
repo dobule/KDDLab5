@@ -29,10 +29,9 @@ class Vector:
             if not(val is 0):
                 self.s_vect.append((idx, val))
 
-
         self.w_vect = [(i, tf_f(t) * idf_f(df_vect[i])) for i, t in self.s_vect]
 
-    def groud_truth(self):
+    def ground_truth(self):
         return (self.author, self.title)
 
     def cosine(self, oth_vect):
@@ -59,7 +58,6 @@ class Vector:
                 result = result + self.s_vect[i][1] * oth_vect.s_vect[j][1]
 
         return result
-
 
     def magnitude(self):
         """ Computes the magnitude of the vector """

@@ -15,7 +15,7 @@ parser.add_argument('--output', action='store', help='vector output filename')
 args = parser.parse_args()
 ROOT_DIR = args.rootdir
 STOP_WORDS = args.stop_words
-STEMMING = args.stemgit
+STEMMING = args.stem
 GT_OUTFILE = args.ground_truth
 OUTPUT = args.output
 
@@ -24,7 +24,6 @@ corpus = Corpus(ROOT_DIR, STOP_WORDS, STEMMING)
 all_words = corpus.all_words()
 doc_vectors = corpus.listOfVectors(all_words)
 
-"""
 # write ground truth to file
 if GT_OUTFILE:
     with open(GT_OUTFILE, 'w') as f:
@@ -38,4 +37,3 @@ if OUTPUT:
         f.write(out_string)
 else:
     print(out_string)
-"""
