@@ -1,5 +1,5 @@
 import unittest
-import Vector
+from Vector import Vector
 import math
 
 
