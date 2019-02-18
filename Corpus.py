@@ -33,11 +33,10 @@ class Corpus:
         """ Returns a list of Vector objects where each Vector represents a
             particular document.
         """
-
         return [doc.toVector(
-                  vect_schema, 
-                  self.df_vect(vect_schema),
-                  self.num_docs) 
+                  vect_schema,
+                  self.num_docs,
+                  self.df_vect(vect_schema)) 
                 for doc in self.documents] 
 
 

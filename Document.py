@@ -27,7 +27,9 @@ class Document:
 
     def toVector(self, vect_schema, num_docs, df_vect):
         """ Creates a Vector object from the document """        
-        return Vector(self.createFreqVect(vect_schema), 
+        return Vector(self.author,
+                      self.title,
+                      self.createFreqVect(vect_schema), 
                       self.length, 
                       num_docs, 
                       df_vect)
@@ -45,6 +47,7 @@ class Document:
                 count[word] = 0
 
         return [(k, v) for k, v in count.items()]
+
 
     def init_words(self, orig_text, stop_words, should_stem):
         """ Splits text into word tokens, removes stop words and stubs

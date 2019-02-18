@@ -16,7 +16,6 @@ class Vector:
               n_docs  -- Number of documents in corpus
               df_vect -- Number of documents each word appears in
         """
-
         self.author = author
         self.title = title
         self.s_vect = []
@@ -28,10 +27,11 @@ class Vector:
         idf_f = lambda df: math.log(float(n_docs) / df, 2)
 
         for idx, val in enumerate(f_vect):
-            if not(val is 0):
+            if val > 0:
                 self.s_vect.append((idx, val))
 
-        self.w_vect = [(i, t) for (i, t) in self.s_vect]
+        self.w_vect = [(i, tf_f(t) * idf_f(df_vect[i])) for (i, t) in self.s_vect]
+
 
     def ground_truth(self):
         return (self.author, self.title)
