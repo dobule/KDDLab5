@@ -15,7 +15,7 @@ parser.add_argument('--output', action='store', help='vector output filename')
 args = parser.parse_args()
 ROOT_DIR = args.rootdir
 STOP_WORDS = args.stop_words
-STEMMING = args.stemgit
+STEMMING = args.stem
 GT_OUTFILE = args.ground_truth
 OUTPUT = args.output
 

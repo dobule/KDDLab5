@@ -55,26 +55,27 @@ class Document:
         self.freq_vector = [(k, v) for k, v in count.items()]
 
 
-    def init_words(self):
+    def init_words(self, orig_text):
         """ Splits text into word tokens, removes stop words and stubs
               the remaining words.
         """
-        document = self.orig_text
+        document = orig_text
+
         for c in string.punctuation:
             document = document.replace(c, ' ')
+
         for word in document.split():
             word = word.strip().lower()
             should_add = True
-            for c in word:
-                if c not in string.ascii_letters:
-                    should_add = False
+
             if word == '':
                 should_add = False
-            if not self.stop_words:
-                if word in self.stop_words:
-                    should_add = False
+            if word in self.stop_words:
+                should_add = False
+
             if self.should_stem and should_add:
                 word = self.porter.stem(word, 0, len(word) - 1)
+            
             if should_add:
                 self.words.append(word)
 
