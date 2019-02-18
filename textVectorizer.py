@@ -21,17 +21,21 @@ OUTPUT = args.output
 
 # create corpus
 corpus = Corpus(ROOT_DIR, STOP_WORDS, STEMMING)
+all_words = corpus.all_words()
+doc_vectors = corpus.listOfVectors(all_words)
 
+"""
 # write ground truth to file
 if GT_OUTFILE:
     with open(GT_OUTFILE, 'w') as f:
-        conv_gt = [','.join(list(entry)) for entry in corpus.ground_truth()]
-        f.write('\n'.join(conv_gt))
+        gt_vect_str = [','.join(vec.ground_truth()) for vec in doc_vectors]
+        f.write('\n'.join(gt_vect_str))
 
 # write vectors to file
-out_string = '\n'.join([doc.vector for doc in corpus.documents])
+out_string = '\n'.join([vec.w_vect for vec in doc_vectors])
 if OUTPUT:
     with open(OUTPUT, 'w') as f:
         f.write(out_string)
 else:
     print(out_string)
+"""
