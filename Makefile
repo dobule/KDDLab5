@@ -9,29 +9,43 @@ textVectorizer: textVectorizer.py Vector.py Document.py Corpus.py
 	--ground-truth ./ground_truth.csv \
     --output ./C50_Vectors/nostop/vectors.csv
 
+textVectorizer-runall: textVectorizer-nostop \
+                       textVectorizer-nostop-stem \
+                       textVectorizer-onix \
+                       textVectorizer-onix-stem \
+                       textVectorizer-mysql \
+                       textVectorizer-mysql-stem \
+                       textVectorizer-short\
+                       textVectorizer-short-stem \
+                       textVectorizer-medium\
+                       textVectorizer-medium-stem \
+                       textVectorizer-long\
+                       textVectorizer-long-stem 
+	echo "Ooooh boy, this is going to take a while\n"
+
 textVectorizer-nostop: textVectorizer.py Vector.py Document.py Corpus.py 
-	python3 textVectorizer.py ./C50 -sw ./StopWords/stopwords-onyx.txt \
+	python3 textVectorizer.py ./C50 \
 	--ground-truth ./C50_Vectors/onyx/ground_truth.csv \
 	--output ./C50_Vectors/nostop-stem/vectors.csv
 
 textVectorizer-nostop-stem: textVectorizer.py Vector.py Document.py Corpus.py \
 	./StopWords/stopwords/onyx.txt
-	python3 textVectorizer.py ./C50 -sw ./StopWords/stopwords-onyx.txt \
+	python3 textVectorizer.py ./C50 \
 	--ground-truth ./C50_Vectors/onyx/ground_truth.csv \
 	--output ./C50_Vectors/onyx/vectors.csv \
     --stem
 
-textVectorizer-onyx: textVectorizer.py Vector.py Document.py Corpus.py \
-	./StopWords/stopwords/onyx.txt
-	python3 textVectorizer.py ./C50 -sw ./StopWords/stopwords-onyx.txt \
-	--ground-truth ./C50_Vectors/onyx/ground_truth.csv \
-	--output ./C50_Vectors/onyx/vectors.csv
+textVectorizer-onix: textVectorizer.py Vector.py Document.py Corpus.py \
+	./StopWords/stopwords/onix.txt
+	python3 textVectorizer.py ./C50 -sw ./StopWords/stopwords-onix.txt \
+	--ground-truth ./C50_Vectors/onix/ground_truth.csv \
+	--output ./C50_Vectors/onix/vectors.csv
 
-textVectorizer-onyx-stem: textVectorizer.py Vector.py Document.py Corpus.py \
-	./StopWords/stopwords/onyx.txt
-	python3 textVectorizer.py ./C50 -sw ./StopWords/stopwords-onyx.txt \
-	--ground-truth ./C50_Vectors/onyx-stem/ground_truth.csv \
-	--output ./C50_Vectors/onyx-stem/vectors.csv \
+textVectorizer-onix-stem: textVectorizer.py Vector.py Document.py Corpus.py \
+	./StopWords/stopwords/onix.txt
+	python3 textVectorizer.py ./C50 -sw ./StopWords/stopwords-onix.txt \
+	--ground-truth ./C50_Vectors/onix-stem/ground_truth.csv \
+	--output ./C50_Vectors/onix-stem/vectors.csv \
     --stem
 
 textVectorizer-mysql: textVectorizer.py Vector.py Document.py Corpus.py \
