@@ -5,9 +5,21 @@ clean:
 	rm *.pyc 
 
 textVectorizer: textVectorizer.py Vector.py Document.py Corpus.py
-	python3 textVectorizer.py ./TestData -sw ./StopWords/stopwords-onyx.txt \
-	--ground-truth ./ground_truth.csv
+	python3 textVectorizer.py ./TestData \
+	--ground-truth ./ground_truth.csv \
+    --output ./C50_Vectors/nostop/vectors.csv
 
+textVectorizer-nostop: textVectorizer.py Vector.py Document.py Corpus.py 
+	python3 textVectorizer.py ./C50 -sw ./StopWords/stopwords-onyx.txt \
+	--ground-truth ./C50_Vectors/onyx/ground_truth.csv \
+	--output ./C50_Vectors/nostop-stem/vectors.csv
+
+textVectorizer-nostop-stem: textVectorizer.py Vector.py Document.py Corpus.py \
+	./StopWords/stopwords/onyx.txt
+	python3 textVectorizer.py ./C50 -sw ./StopWords/stopwords-onyx.txt \
+	--ground-truth ./C50_Vectors/onyx/ground_truth.csv \
+	--output ./C50_Vectors/onyx/vectors.csv \
+    --stem
 
 textVectorizer-onyx: textVectorizer.py Vector.py Document.py Corpus.py \
 	./StopWords/stopwords/onyx.txt
@@ -21,7 +33,6 @@ textVectorizer-onyx-stem: textVectorizer.py Vector.py Document.py Corpus.py \
 	--ground-truth ./C50_Vectors/onyx-stem/ground_truth.csv \
 	--output ./C50_Vectors/onyx-stem/vectors.csv \
     --stem
-
 
 textVectorizer-mysql: textVectorizer.py Vector.py Document.py Corpus.py \
 	./StopWords/stopwords/mysql.txt
