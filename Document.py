@@ -26,7 +26,7 @@ class Document:
         self.author = author
         self.title = title
 
-        self.words = self.init_words()
+        self.words = self.init_words(orig_text)
         self.freq_vector = self.init_freq_vector()
         self.vector_schema = [item for idx, item in self.freq_vector]
 
@@ -47,27 +47,28 @@ class Document:
 
         return [(k, v) for k, v in count.items()]
 
-    def init_words(self):
+    def init_words(self, orig_text):
         """ Splits text into word tokens, removes stop words and stubs
               the remaining words.
         """
+
         words = []
-        document = self.orig_text
+        document = orig_text
         for c in string.punctuation:
             document = document.replace(c, ' ')
+
         for word in document.split():
             word = word.strip().lower()
             should_add = True
-            for c in word:
-                if c not in string.ascii_letters:
-                    should_add = False
+
             if word == '':
                 should_add = False
-            if not self.stop_words:
-                if word in self.stop_words:
-                    should_add = False
+            if word in self.stop_words:
+                should_add = False
+
             if self.should_stem and should_add:
                 word = self.porter.stem(word, 0, len(word) - 1)
+            
             if should_add:
                 words.append(word)
         return words
@@ -86,28 +87,3 @@ class Document:
 
         return freq_vect
 
-    def createSparseVector(self, vect_schema, n_docs, df_vect):
-        """ Initializes a Vector obect in self.vector 
-              
-              vect_schema -- List of words that represent the format of the 
-                long-form word vector
-              n_docs      -- Number of documents in the corpus
-              df_vect     -- Number of documents each word in vect_schema
-                              appears in
-        """
-
-        
-
-    def cosine(self, oth_doc):
-        """ Finds the cosine similarity between two documents """
-        if self.vector is None or oth_doc.vector is None:
-            return None
-        
-        return self.vector.cosine(oth_doc.vector)
-       
-    def okapi(self, oth_doc, n_docs, df_vect, avdl, k_1, b, k_2):
-        if self.vector is None or oth_doc.vector is None:
-            return None
-
-        return self.vector.okapi(oth_doc.vector, n_docs, df_vect, 
-                                                 avdl, k_1, b, k_2)
