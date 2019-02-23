@@ -22,7 +22,7 @@ class Vector:
 
         # If n_docs or df_vect is None, set the w_vect to f_vect
         if n_docs is None or df_vect is None:
-            self.w_vect = f_vect
+            self.s_vect = f_vect
             return
 
 
@@ -36,11 +36,12 @@ class Vector:
             if val > 0:
                 s_vect.append((idx, val))
 
-        self.w_vect = [(i, tf_f(t) * idf_f(df_vect[i])) for (i, t) in s_vect]
+        self.s_vect = [(i, tf_f(t) * idf_f(df_vect[i])) for (i, t) in s_vect]
 
 
     def ground_truth(self):
         return (self.author, self.title)
+
 
     def cosine(self, oth_vect):
         """ Computes cosine similarity between self and oth_vect """
@@ -50,55 +51,78 @@ class Vector:
 
         return dot / magProd
 
+
     def dotProd(self, oth_vect):
         """ Computes dot product between this vector and another vector """
         if not len(self.s_vect) == len(oth_vect.s_vect):
             raise Exception
 
-        return sum(i[1] * j[1] for i, j in zip(self.s_vect, oth_vect.s_vect))
+         totalSum = 0
+         sIdx = 0
+         oIdx = 0
+
+        while sIdx < len(self.s_vect) and oIdx < len(oth_vect.s_vect):
+            sItem = self.s_vect[sIdx]
+            oItem = oth_vect.s_vect[oIdx]
+
+            if sItem[0] > oItem[0]:
+               oIdx += 1
+            elif sItem[0] < oItem[0]:
+               sIdx += 1
+            else:
+               totalSum += sItem[1] * oItem[1]:
+               sIdx += 1
+               oIdx += 1
+
+        return totalSum
+
 
     def magnitude(self):
         """ Computes the magnitude of the vector """
-        return math.sqrt(sum([val**2 for idx,val in self.s_vect]))
+        return math.sqrt(self.dotProd(self))
 
-    # TODO correct the okapi method
-    def okapi(self, oth_vect, n_docs, df_vect, avdl, k_1, b, k_2):
+
+    def okapi(self, oth_vect, numDocs, df_vect, avgDocLen, k1, k2, b):
         """ Computes okapi distancce of two sparse vectors
               
-              oth_vect -- The other vector to find distance from
-              n_docs   -- Number of documents in corpus
-              df_vect  -- The number of docs each word shows up in
-              avdl     -- Average length (in num char) for a document
-              k_1      -- Normalization parameter for self
-              b        -- Normalization parameter for document length
-              k_2      -- Normalization parameter for oth_vect
+              oth_vect  -- The other vector to find distance from
+              numDocs   -- Number of documents in corpus
+              df_vect   -- The number of docs each word shows up in
+              avgDocLen -- Average length (in num char) for a document
+              k1        -- Normalization parameter for self (usual 1.0-2.0)
+              k2        -- Normalization parameter for oth_vect (usual 1-1000)
+              b         -- Normalization parameter for document length (usual 0.75)
         """
-        i = 0
-        j = 0
-        result = 0
+        sIdx = 0
+        jIdx = 0
+        totalSum = 0
 
         df_i = len(self.s_vect)
         df_j = len(oth_vect.s_vect)
 
-        while i < len(self.s_vect) and j < len(oth_vect):
-            if self.s_vect[i][0] < self.s_vect[j][0]:
-                i = i + 1
-            elif self.s_vect[i][0] > self.s_vect[j][0]:
-                j = j + 1
+        while sIdx < len(self.s_vect) and jIdx < len(oth_vect.s_vect):
+
+            sItem = self.s_vect[sIdx]
+            oItem = oth_vect.s_vect[sIdx]
+
+            if sItem[0] < oItem[0]:
+                sIdx += 1
+            elif sItem[i][0] > sItem[j][0]:
+                sIdx += 1
             else:
-                # If same term is in both docs
-                f_i = self.s_vect[i][1]
-                f_j = oth_vect.s_vect[j][1]
-                term1 = math.log((n_docs - df_vect[i] + 0.5) /
-                                 (d_vect[i] + 0.5))
-                term2 = ((k_1 + f_i) / 
-                         (k_1 * (1 - b + b * (self.d_len / avdl)) + f_i))
-                term3 = (((k_2 + 1) * f_j) /
-                         (k_2 + f_j))
-                result = result + math.log(term1 * term2 * term3)
+                sVal = self.s_vect[i][1]
+                oVal = oth_vect.s_vect[j][1]
+
+                term1 = math.log((numDocs - df_vect[sIdx] + 0.5)
+                                 / (d_vect[sIdx] + 0.5))
+                term2 = ((k1 + sVal) 
+                         / (k1 * (1 - b + b * (self.d_len / avdl)) + sVal))
+                term3 = (((k2 + 1) * oVal) 
+                         / (k2 + oVal))
+                result += term1 * term2 * term3
 
        
-
+   
 
 
 
