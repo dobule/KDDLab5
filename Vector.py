@@ -57,9 +57,9 @@ class Vector:
         if not len(self.s_vect) == len(oth_vect.s_vect):
             raise Exception
 
-         totalSum = 0
-         sIdx = 0
-         oIdx = 0
+        totalSum = 0
+        sIdx = 0
+        oIdx = 0
 
         while sIdx < len(self.s_vect) and oIdx < len(oth_vect.s_vect):
             sItem = self.s_vect[sIdx]
@@ -70,7 +70,7 @@ class Vector:
             elif sItem[0] < oItem[0]:
                sIdx += 1
             else:
-               totalSum += sItem[1] * oItem[1]:
+               totalSum += sItem[1] * oItem[1]
                sIdx += 1
                oIdx += 1
 

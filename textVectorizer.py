@@ -31,7 +31,7 @@ if GT_OUTFILE:
         f.write('\n'.join(gt_vect_str))
 
 # write vectors to file
-out_string = '\n'.join([str(vec.w_vect) for vec in doc_vectors])
+out_string = '\n'.join([str(vec.s_vect) for vec in doc_vectors])
 if OUTPUT:
     with open(OUTPUT, 'w') as f:
         f.write(out_string)
