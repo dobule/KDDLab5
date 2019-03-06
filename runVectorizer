@@ -1,3 +1,0 @@
-#!/bin/bash
-
-python textVectorizer.py ./C50 -sw ./StopWords -st --ground-truth ./ground_truth.csv
